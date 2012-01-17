@@ -1,4 +1,4 @@
-package crawler;
+package retriever;
 
 public class PageRetriever {
 

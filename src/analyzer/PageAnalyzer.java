@@ -1,4 +1,4 @@
-package crawler;
+package analyzer;
 
 public class PageAnalyzer {
 

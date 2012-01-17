@@ -1,4 +1,4 @@
-package crawler;
+package parser;
 
 public class PageParser {
 
