@@ -30,6 +30,8 @@ public class CrawlerMain {
 		for(String u:urls){
 			System.out.println("link found:" + u);
 		}
+		CrawlerGUI a_CrawlerGui = new CrawlerGUI();
+		a_CrawlerGui.start();
 	}
 
 }
