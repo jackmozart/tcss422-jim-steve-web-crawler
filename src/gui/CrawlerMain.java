@@ -34,6 +34,13 @@ public class CrawlerMain {
 		for(URI u:urls){
 			System.out.println("link found:" + u);
 		}
+		
+		for(String w:a_page.getWords()){
+			System.out.println("word: "+w);
+		}
+		
+		
+		
 		//CrawlerGUI a_CrawlerGui = new CrawlerGUI();
 		//a_CrawlerGui.start();
 	}
