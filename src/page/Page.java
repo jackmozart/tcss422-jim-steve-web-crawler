@@ -1,24 +1,24 @@
 package page;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Page {
-	private URL my_path;
+	private URI my_path;
 	private String my_contents;
 	
-	private List<String> my_links;
+	private List<URI> my_links;
 	private List<String> my_words;
 	
-	public Page(URL the_path, String the_contents){
+	public Page(URI the_path, String the_contents){
 		my_path = the_path;
 		my_contents = the_contents;
-		my_links = new ArrayList<String>();
+		my_links = new ArrayList<URI>();
 		my_words = new ArrayList<String>();
 	}
 	
-	public void addLink(String the_link){
+	public void addLink(URI the_link){
 		my_links.add(the_link);
 	}
 	
@@ -26,7 +26,7 @@ public class Page {
 		my_words.add(the_word);
 	}
 	
-	public URL getPath(){
+	public URI getPath(){
 		return my_path;
 	}
 	
@@ -34,7 +34,7 @@ public class Page {
 		return my_contents;
 	}
 	
-	public List<String> getLinks(){
+	public List<URI> getLinks(){
 		return my_links;
 	}
 	

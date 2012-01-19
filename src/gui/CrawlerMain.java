@@ -1,6 +1,8 @@
 package gui;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
@@ -15,23 +17,25 @@ public class CrawlerMain {
 	 */
 	public static void main(String[] args) {
 		Page a_page = null;
+
 		try {
-			a_page = PageRetriever.retrieve(new URL("http://www.crypto.com/papers/"));
-		} catch (MalformedURLException e) {
+			a_page = PageRetriever.retrieve(new URI("http://www.jpgunter.com/crawler/"));
+		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		System.out.println(a_page.getContents());
 		
 		PageParser.parse(a_page);
 		
-		List<String> urls = a_page.getLinks();
+		List<URI> urls = a_page.getLinks();
 		
-		for(String u:urls){
+		for(URI u:urls){
 			System.out.println("link found:" + u);
 		}
-		CrawlerGUI a_CrawlerGui = new CrawlerGUI();
-		a_CrawlerGui.start();
+		//CrawlerGUI a_CrawlerGui = new CrawlerGUI();
+		//a_CrawlerGui.start();
 	}
 
 }
