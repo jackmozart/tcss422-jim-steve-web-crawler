@@ -1,10 +1,9 @@
 package gui;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 import page.Page;
 import parser.PageParser;
@@ -19,13 +18,13 @@ public class CrawlerMain {
 		Page a_page = null;
 
 		try {
-			a_page = PageRetriever.retrieve(new URI("http://www.jpgunter.com/crawler/"));
+			a_page = PageRetriever.retrieve(new URI("http://www.crypto.com/papers/"));
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		System.out.println(a_page.getContents());
+		System.out.println(a_page.getHTML());
 		
 		PageParser.parse(a_page);
 		
@@ -35,8 +34,10 @@ public class CrawlerMain {
 			System.out.println("link found:" + u);
 		}
 		
-		for(String w:a_page.getWords()){
-			System.out.println("word: "+w);
+		Map<String, Integer> word_stats = a_page.getWords();
+		
+		for(String s : word_stats.keySet()){
+			System.out.format("Word: %s\tCount: %d\n", s, word_stats.get(s));
 		}
 		
 		
