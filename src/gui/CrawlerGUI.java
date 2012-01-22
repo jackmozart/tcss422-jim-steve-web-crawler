@@ -3,11 +3,14 @@ package gui;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Hashtable;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -26,66 +29,80 @@ import javax.swing.JTextField;
 @SuppressWarnings("serial")
 public class CrawlerGUI extends JFrame implements ActionListener{
 	
-	private static final String END_TEXT = "End City";
-
-	private static final String START_TEXT = "Start City";
-
-	JPanel my_panel;
+	public static final String DEFULT_START_PAGE = "www.joindota.com      ";
 	
-	JFileChooser my_fileChooser;
+	public static final String DEFULT_SEED = "       100";
 	
-	JButton my_fileButton;
+	private JPanel my_panel;
+	
+	private JTextField my_input_url;
+	
+	private JTextField my_num_pages;
 
-	private JComboBox my_startList;
-
-	private JComboBox my_endList;
-
-	private JButton my_path;
+	private JButton my_runButton;
 
 	private JLabel my_output;
 
-	private JLabel my_fileLabel;
-
-	private Object my_analyzer;
+	private JButton my_stopButton;
 	
 	public CrawlerGUI (){
 		super();
 		//sets up the window
 		this.setTitle("I SAID GOOD DAY SIR");
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		Image icon = Toolkit.getDefaultToolkit().getImage("compguy.png");
+		this.setIconImage(icon);
+		
 		
 		//adds panel to the window
 		my_panel = new JPanel(new FlowLayout());
 		this.setContentPane(my_panel);
 		my_panel.setBackground(Color.white);
 		
-		//add file chooser 
-		my_fileChooser = new JFileChooser((new File(".")).getAbsolutePath());
-		my_fileButton = new JButton("Load File");
-		my_fileButton.addActionListener(this);
+		//make input spots
+		//url input
+		JLabel web_label = new JLabel();
+		web_label.setText("Start Page:");
+		web_label.setToolTipText("Insert a web addres to start search in format www.startaddres.org");
+		my_panel.add(web_label);
 		
-		my_fileLabel = new JLabel();
+		my_input_url = new JTextField();
+		my_input_url.setName("input url");
+		my_input_url.setText(DEFULT_START_PAGE);
+		my_input_url.setBackground(Color.GRAY);
+		my_input_url.setSize(my_input_url.getSize());
+		my_panel.add(my_input_url);
 		
-		my_panel.add(my_fileLabel);
-		my_panel.add(my_fileButton);
+		//num pages input spot
+		JLabel nup_pages_label = new JLabel();
+		nup_pages_label.setText("Max Pages:");
+		nup_pages_label.setToolTipText("Insert numper of pages to search.  If no input is provided " + DEFULT_SEED + " pages will be searched.");
+		my_panel.add(nup_pages_label);
 		
-		//make drop down lists
-		my_startList = new JComboBox();
-		my_startList.addItem(START_TEXT);
-		my_panel.add(my_startList);
 		
-		my_endList = new JComboBox();
-		my_endList.addItem(END_TEXT);
-		my_panel.add(my_endList);
+		my_num_pages = new JTextField();
+		my_num_pages.setName("input seed");
+		my_num_pages.setText(DEFULT_SEED);
+		my_num_pages.setBackground(Color.GRAY);
+		my_num_pages.setSize(my_num_pages.getSize());
+		my_panel.add(my_num_pages);
+		
+		
+
 		
 		//make path button to do work
-		my_path = new JButton("Compute fastest Route");
-		my_panel.add(my_path);
-		my_path.addActionListener(this);
+		my_runButton = new JButton("Run");
+		my_panel.add(my_runButton);
+		my_runButton.addActionListener(this);
+		
+		//makes the current run stop
+		my_stopButton = new JButton("Stop");
+		my_panel.add(my_stopButton);
+		my_stopButton.addActionListener(this);
 		
 		//make output label
 		my_output = new JLabel();
-		my_output.setFont(new Font("Helvetica",Font.BOLD, 22));
+		my_output.setFont(new Font("Helvetica",Font.BOLD, 14));
 		my_panel.add(my_output);
 
 		
@@ -95,41 +112,49 @@ public class CrawlerGUI extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent the_event) {
-		if (the_event.getSource() == my_path) {
-			//find path button was selected get the selected starting and ending cites.
+		if (the_event.getSource() == my_runButton) {
+			System.out.print("run button pressed");	
 			
-			if(my_startList.getSelectedItem().equals(START_TEXT) || my_endList.getSelectedItem().equals(END_TEXT)){
-				//used for error checking (if no city is selected)
-				my_output.setText("No City selected");
-				this.pack();
-				return;
-			}
-
-			my_output.setText(my_analyzer.toString());			
 	
-		} else if (the_event.getSource() == my_fileButton) { // chooose file
-																// button was
-																// selected
-			int result = my_fileChooser.showOpenDialog(this);
-			if (result == JFileChooser.APPROVE_OPTION) {
-				my_fileLabel.setText("Selected File is:"
-						+ my_fileChooser.getSelectedFile().getAbsolutePath());
-
-				//clear out any old information
-				my_startList.removeAll();
-				my_endList.removeAll();
-				
-				//fill in all new start and end possibilities  
-
-			}
+		} else if (the_event.getSource() == my_stopButton) { 
+			System.out.print("Stop button pressed");
 		}
 		this.pack();
-
 	}
 
 	
 	public void start() {
 		this.setVisible(true);		
 	}
+	
+	public String normalizeUrl(){
+		String input = my_input_url.getText();
+		input.trim();
+		
+		//checkformat
+		
+		
+		return input;
+	}
+	
+	public int normalizeNumPages(){
+		String input = my_num_pages.getText();
+		input.trim();
+		//make sure its a number
+		int result = -1;
+		try{
+			result = java.lang.Integer.parseInt(input);
+			
+		}catch (NumberFormatException e) {
+			
+		}
+		return result;
+	}
+	
+	
+	public void errorWindow (String message){
+		
+	}
+	
 	
 }
