@@ -11,13 +11,13 @@ public class Page {
 	private String my_contents;
 	
 	private List<URI> my_links;
-	private Map<String, Integer> my_words;
+	private List<String> my_words;
 	
 	public Page(URI the_path, String the_contents){
 		my_path = the_path;
 		my_contents = the_contents;
 		my_links = new ArrayList<URI>();
-		my_words = new HashMap<String, Integer>();
+		my_words = new ArrayList<String>();
 	}
 	
 	public void addLink(URI the_link){
@@ -25,11 +25,7 @@ public class Page {
 	}
 	
 	public void addWord(String the_word){
-		if(my_words.containsKey(the_word.toUpperCase())){
-			my_words.put(the_word.toUpperCase(), my_words.get(the_word.toUpperCase()) + 1);
-		} else {
-			my_words.put(the_word.toUpperCase(), 1);
-		}
+		my_words.add(the_word);
 	}
 	
 	public URI getPath(){
@@ -44,7 +40,7 @@ public class Page {
 		return my_links;
 	}
 	
-	public Map<String,Integer> getWords(){
+	public List<String> getWords(){
 		return my_words;
 	}
 

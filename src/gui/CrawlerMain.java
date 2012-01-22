@@ -34,10 +34,10 @@ public class CrawlerMain {
 			System.out.println("link found:" + u);
 		}
 		
-		Map<String, Integer> word_stats = a_page.getWords();
+		List<String> words = a_page.getWords();
 		
-		for(String s : word_stats.keySet()){
-			System.out.format("Word: %s\tCount: %d\n", s, word_stats.get(s));
+		for(String s : words){
+			System.out.format("Word: %s\n", s);
 		}
 		
 		

@@ -29,28 +29,10 @@ public class PageParser {
 			}
 		}
 		
-//		Pattern html_link = Pattern
-//				.compile("href=\"([a-zA-Z0-9\\-./\\?\\=\\:]+\\.html)\"");
-//		Matcher html_match = html_link.matcher(the_page.getHTML());
-//
-//		while (html_match.find()) {
-//			the_page.addLink(the_page.getPath().resolve(html_match.group(1)));
-//			// System.out.println("found a match: "+ html_match.group(1));
-//		}
-//
-//		Pattern txt_link = Pattern
-//				.compile("href=\"([a-zA-Z0-9\\-./\\?\\=\\:]+\\.txt)\"");
-//		Matcher txt_match = txt_link.matcher(the_page.getHTML());
-//
-//		while (txt_match.find()) {
-//			the_page.addLink(the_page.getPath().resolve(txt_match.group(1)));
-//			// System.out.println("found a match: "+ txt_match.group(1));
-//		}
-		
 		String page_text = page_source.getTextExtractor().toString();
 		
 
-		Pattern word_pat = Pattern.compile("[^A-Za-z']([A-Za-z']+)[^A-Za-z']");
+		Pattern word_pat = Pattern.compile("\\b(\\w+)\\b");
 		Matcher word_mat = word_pat.matcher(page_text);
 		
 		while(word_mat.find()){
