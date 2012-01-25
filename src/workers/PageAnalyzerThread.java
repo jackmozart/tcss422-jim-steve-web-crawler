@@ -1,4 +1,4 @@
-package analyzer;
+package workers;
 
 public class PageAnalyzerThread {
 

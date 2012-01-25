@@ -3,11 +3,8 @@ package gui;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Map;
 
 import page.Page;
-import parser.PageParser;
-import retriever.PageRetriever;
 
 public class CrawlerMain {
 
@@ -18,7 +15,7 @@ public class CrawlerMain {
 		Page a_page = null;
 
 		try {
-			a_page = PageRetriever.retrieve(new URI("http://www.crypto.com/papers/"));
+			a_page = new Page(new URI("jpgunter.com/crawler/")).retrieve();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -26,7 +23,7 @@ public class CrawlerMain {
 
 		System.out.println(a_page.getHTML());
 		
-		PageParser.parse(a_page);
+		a_page.parse();
 		
 		List<URI> urls = a_page.getLinks();
 		
