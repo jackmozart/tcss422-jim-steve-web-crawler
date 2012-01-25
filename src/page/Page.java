@@ -68,8 +68,7 @@ public class Page {
 				html.append(in.readLine().trim());
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			html.append("***ERROR***");
 		}
 		
 		my_html = html.toString();

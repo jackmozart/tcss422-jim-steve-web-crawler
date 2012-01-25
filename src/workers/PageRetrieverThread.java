@@ -1,27 +1,33 @@
 package workers;
 
+import java.net.URI;
+import java.util.HashSet;
 import java.util.Queue;
+import java.util.Set;
 
 import page.Page;
 
-
 public class PageRetrieverThread extends Thread {
-	
+
 	private Queue<Page> pages_to_get;
 	private Queue<Page> pages_to_parse;
-	private Boolean stop_bit;
-	
-	public PageRetrieverThread(Queue<Page> the_pages_to_get, Queue<Page> the_pages_to_parse, Boolean the_stop_bit){
+	private StopBit stop_bit;
+
+	public PageRetrieverThread(Queue<Page> the_pages_to_get,
+	    Queue<Page> the_pages_to_parse, StopBit the_stop_bit) {
 		super();
 		pages_to_get = the_pages_to_get;
 		pages_to_parse = the_pages_to_parse;
+		stop_bit = the_stop_bit;
 	}
-	
+
 	@Override
 	public void run() {
-		while(stop_bit){
+		while (!stop_bit.isStopped()) {
 			try {
-				pushToParseQueue(getNextPage().retrieve());
+				while (!pages_to_get.isEmpty()) {
+					pages_to_parse.add(pages_to_get.remove().retrieve());
+				}
 				sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -29,17 +35,4 @@ public class PageRetrieverThread extends Thread {
 			}
 		}
 	}
-	
-	private synchronized Page getNextPage(){
-		Page next = null;
-		if(!pages_to_get.isEmpty()){
-			next = pages_to_get.remove();
-		}
-		return next;
-	}
-	
-	private synchronized void pushToParseQueue(Page the_page){
-		pages_to_parse.add(the_page);
-	}
-
 }
