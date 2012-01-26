@@ -20,13 +20,13 @@ public class Page {
 	private String my_html;
 	
 	private List<URI> my_links;
-	private List<String> my_words;
+	private Map<String, Integer> my_words;
 	
 	public Page(URI the_path){
 		my_path = the_path;
 		my_html = "";
 		my_links = new ArrayList<URI>();
-		my_words = new ArrayList<String>();
+		my_words = new HashMap<String, Integer>();
 	}
 	
 	public void setContents(String the_contents){
@@ -38,7 +38,11 @@ public class Page {
 	}
 	
 	public void addWord(String the_word){
-		my_words.add(the_word);
+		if(my_words.containsKey(the_word)){
+			my_words.put(the_word, my_words.get(the_word) + 1);
+		} else {
+			my_words.put(the_word, 1);
+		}
 	}
 	
 	public URI getPath(){
@@ -53,7 +57,7 @@ public class Page {
 		return my_links;
 	}
 	
-	public List<String> getWords(){
+	public Map<String, Integer> getWords(){
 		return my_words;
 	}
 
