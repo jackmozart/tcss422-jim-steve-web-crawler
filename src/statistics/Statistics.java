@@ -2,6 +2,7 @@ package statistics;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Statistics {
 	private int pages_retrieved = 0;
@@ -10,9 +11,9 @@ public class Statistics {
 	private int total_links = 0;
 	private int links_followed = 0;
 	
-	private double retrieval_time = 0.0;
-	private double parse_time = 0.0;
-	private double analyze_time = 0.0;
+	private long retrieval_time = 0;
+	private long parse_time = 0;
+	private long analyze_time = 0;
 	
 	Map<String, Integer> keyword_count = new HashMap<String, Integer>();
 
@@ -52,6 +53,10 @@ public class Statistics {
   	return keyword_count;
   }
 	
+	public Set<String> getKeywords(){
+		return keyword_count.keySet();
+	}
+	
 	public void addPagesRetrieved(int the_pages_retrieved) {
   	pages_retrieved += the_pages_retrieved;
   }
@@ -72,17 +77,22 @@ public class Statistics {
   	links_followed += the_links_followed;
   }
 
-	public void addRetrievalTime(double the_retrieval_time) {
+	public void addRetrievalTime(long the_retrieval_time) {
   	retrieval_time += the_retrieval_time;
   }
 
-	public void addParseTime(double the_parse_time) {
+	public void addParseTime(long the_parse_time) {
   	parse_time += the_parse_time;
   }
 	
-	public void addAnalyzeTime(double the_analyze_time){
+	public void addAnalyzeTime(long the_analyze_time){
 		analyze_time += the_analyze_time;
 	}
+	
+	public void addKeyword(String the_keyword){
+		keyword_count.put(the_keyword, 0);
+	}
+	
 	public void addKeywordCount(String the_keyword, int the_count) {
   	keyword_count.put(the_keyword, keyword_count.get(the_keyword) + the_count);
   }
@@ -98,7 +108,7 @@ public class Statistics {
 	public double getAverageRetrievalTime(){
 		double art = 0.0;
 		if(pages_retrieved != 0){
-			return retrieval_time / pages_retrieved;
+			art = (double)retrieval_time / (double)pages_retrieved;
 		}
 		return art;
 	}
@@ -106,7 +116,7 @@ public class Statistics {
 	public double getAverageParseTime(){
 		double art = 0.0;
 		if(pages_parsed != 0){
-			return parse_time / pages_parsed;
+			return (double)parse_time / (double)pages_parsed;
 		}
 		return art;
 	}
@@ -114,7 +124,7 @@ public class Statistics {
 	public double getAverageAnalyzeTime(){
 		double art = 0.0;
 		if(pages_analyzed != 0){
-			return analyze_time / pages_analyzed;
+			return (double)analyze_time / (double)pages_analyzed;
 		}
 		return art;
 	}

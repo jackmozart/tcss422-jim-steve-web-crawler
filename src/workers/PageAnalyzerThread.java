@@ -1,33 +1,43 @@
 package workers;
 
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import page.Page;
+import statistics.Statistics;
 
 public class PageAnalyzerThread extends Thread{
 
-	private Queue<Page> pages_to_analyze;
-	private Queue<Page> completed_pages;
+	private BlockingQueue<Page> pages_to_analyze;
+	private BlockingQueue<Page> completed_pages;
 	private StopBit stop_bit;
+	private Statistics stats;
 	
-	public PageAnalyzerThread(Queue<Page> the_pages_to_analyze, Queue<Page> the_completed_pages, StopBit the_stop_bit){
+	public PageAnalyzerThread(BlockingQueue<Page> the_pages_to_analyze, BlockingQueue<Page> the_completed_pages, StopBit the_stop_bit, Statistics the_stats){
 		super();
 		pages_to_analyze = the_pages_to_analyze;
 		completed_pages = the_completed_pages;
 		stop_bit = the_stop_bit;
+		stats = the_stats;
 	}
 	
 	@Override
 	public void run() {
 		while(!stop_bit.isStopped()){
 			try{	
-				while(!pages_to_analyze.isEmpty()){
-					completed_pages.add(pages_to_analyze.remove().analyze());
+				Page temp = pages_to_analyze.poll(1, TimeUnit.SECONDS);
+				if(temp != null){
+					long start_time = System.nanoTime();
+					temp.analyze();
+					long total_time = System.nanoTime() - start_time;
+					synchronized(this){
+						stats.addAnalyzeTime(total_time);
+						stats.addPagesAnalyzed(1);
+					}
+					completed_pages.put(temp);
 				}
-				sleep(1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//If I was interrupted, do nothing, just return.
 			}
 		}
 	}
